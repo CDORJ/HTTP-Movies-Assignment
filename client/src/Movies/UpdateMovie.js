@@ -2,14 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import axios from "axios";
 
-const initialMovie = {
-  title: "",
-  director: "",
-  metascore: "",
-  stars: [],
-};
+const initialMovie = { title: "", director: "", metascore: "" };
 
-const UpdateMovie = (props) => {
+const UpdateMovie = () => {
   const [item, setItem] = useState(initialMovie);
   const { id } = useParams();
   const { push } = useHistory();
@@ -31,12 +26,25 @@ const UpdateMovie = (props) => {
       .catch((err) => console.log(`unable to getMovieById # ${id}: `, err));
   }, [id]);
 
+  const onSubmit = (e) => {
+    e.preventDefault();
+    axios
+      .put(`http://localhost:5000/api/movies/${id}`, item)
+      .then((res) => {
+        console.log(`cd: UpdateMovie.js: onSubmit: axios.put res: `, res);
+        setItem(res.data);
+        push("/");
+      })
+      .catch((err) => console.log(`unable to update movie id # ${id}: `, err));
+  };
+
   return (
     <div className="movie-card">
       <h2>Update Movie Details</h2>
-      <form>
+      <form onSubmit={onSubmit}>
         <label htmlFor="title" />
-        Title<br/>
+        Title
+        <br />
         <input
           id="title"
           name="title"
@@ -44,9 +52,12 @@ const UpdateMovie = (props) => {
           value={item.title}
           type="text"
           onChange={handleChange}
-        /><br/><br/>
+        />
+        <br />
+        <br />
         <label htmlFor="director" />
-        Director<br/>
+        Director
+        <br />
         <input
           id="director"
           name="director"
@@ -54,18 +65,22 @@ const UpdateMovie = (props) => {
           value={item.director}
           type="text"
           onChange={handleChange}
-        /><br/><br/>
+        />
+        <br />
+        <br />
         <label htmlFor="metascore" />
-        Metascore<br/>
+        Metascore
+        <br />
         <input
           id="metascore"
           name="metascore"
           placeHolder="metascore"
           value={item.metascore}
-          type="text"
+          type="number"
           onChange={handleChange}
-        /><br/>
-        <button className='save-button'>Update</button>
+        />
+        <br />
+        <button className="save-button">Update</button>
       </form>
     </div>
   );
