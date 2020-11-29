@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Route, NavLink, useHistory } from "react-router-dom";
+import { Route, useHistory } from "react-router-dom";
 import SavedList from "./Movies/SavedList";
 import MovieList from "./Movies/MovieList";
 import Movie from "./Movies/Movie";
@@ -43,10 +43,10 @@ const App = () => {
         <Movie
           addToSavedList={addToSavedList}
           setMovieList={setMovieList}
-          movieList={movieList}
+          movies={movieList}
         />
       </Route>
-      <Route path="/update-movie/:id" component={UpdateMovie} />
+      <Route path="/update-movie/:id" render={(props) => <UpdateMovie {...props} movies={movieList} setMovieList={setMovieList} />} />
       <Route path="/add-movie" component={AddMovieForm} />
     </>
   );

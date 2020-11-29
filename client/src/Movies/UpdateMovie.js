@@ -2,17 +2,22 @@ import React, { useState, useEffect } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import axios from "axios";
 
-const initialMovie = { title: "", director: "", metascore: "" };
+const initialMovie = {
+  id: null,
+  title: "",
+  director: "",
+  metascore: "",
+  stars: [],
+};
 
-const UpdateMovie = () => {
+const UpdateMovie = (props) => {
   const [item, setItem] = useState(initialMovie);
   const { id } = useParams();
   const { push } = useHistory();
 
   const handleChange = (e) => {
-    e.persist();
     let value =
-      e.target.name === "metascore" ? Number(e.target.value) : e.target.value;
+      e.target.name === "stars" ? e.target.value.split(",") : e.target.value;
     setItem({ ...item, [e.target.name]: value });
   };
 
@@ -49,8 +54,8 @@ const UpdateMovie = () => {
           id="title"
           name="title"
           placeHolder="title"
-          value={item.title}
           type="text"
+          value={item.title}
           onChange={handleChange}
         />
         <br />
@@ -77,6 +82,19 @@ const UpdateMovie = () => {
           placeHolder="metascore"
           value={item.metascore}
           type="number"
+          onChange={handleChange}
+        />
+        <br />
+        <br />
+        <label htmlFor="stars" />
+        Stars
+        <br />
+        <textarea
+          id="stars"
+          name="stars"
+          placeHolder="stars"
+          value={item.stars.join(",")}
+          type="text"
           onChange={handleChange}
         />
         <br />
