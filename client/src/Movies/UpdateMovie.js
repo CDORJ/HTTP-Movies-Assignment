@@ -11,14 +11,14 @@ const initialMovie = {
 };
 
 const UpdateMovie = (props) => {
-  const [item, setItem] = useState(initialMovie);
+  const [movie, setMovie] = useState(initialMovie);
   const { id } = useParams();
   const { push } = useHistory();
 
   const handleChange = (e) => {
     let value =
       e.target.name === "stars" ? e.target.value.split(",") : e.target.value;
-    setItem({ ...item, [e.target.name]: value });
+    setMovie({ ...movie, [e.target.name]: value });
   };
 
   useEffect(() => {
@@ -26,7 +26,7 @@ const UpdateMovie = (props) => {
       .get(`http://localhost:5000/api/movies/${id}`)
       .then((res) => {
         console.log("cd: UpdateMovie.js: UpdateMovie: axios.get res: ", res);
-        setItem(res.data);
+        setMovie(res.data);
       })
       .catch((err) => console.log(`unable to getMovieById # ${id}: `, err));
   }, [id]);
@@ -34,10 +34,10 @@ const UpdateMovie = (props) => {
   const onSubmit = (e) => {
     e.preventDefault();
     axios
-      .put(`http://localhost:5000/api/movies/${id}`, item)
+      .put(`http://localhost:5000/api/movies/${id}`, movie)
       .then((res) => {
         console.log(`cd: UpdateMovie.js: onSubmit: axios.put res: `, res);
-        setItem(res.data);
+        setMovie(res.data);
         push("/");
       })
       .catch((err) => console.log(`unable to update movie id # ${id}: `, err));
@@ -55,7 +55,7 @@ const UpdateMovie = (props) => {
           name="title"
           placeHolder="title"
           type="text"
-          value={item.title}
+          value={movie.title}
           onChange={handleChange}
         />
         <br />
@@ -67,7 +67,7 @@ const UpdateMovie = (props) => {
           id="director"
           name="director"
           placeHolder="director"
-          value={item.director}
+          value={movie.director}
           type="text"
           onChange={handleChange}
         />
@@ -80,7 +80,7 @@ const UpdateMovie = (props) => {
           id="metascore"
           name="metascore"
           placeHolder="metascore"
-          value={item.metascore}
+          value={movie.metascore}
           type="number"
           onChange={handleChange}
         />
@@ -92,8 +92,8 @@ const UpdateMovie = (props) => {
         <textarea
           id="stars"
           name="stars"
-          placeHolder="stars"
-          value={item.stars.join(",")}
+          placeHolder="Stars"
+          value={movie.stars.join(",")}
           type="text"
           onChange={handleChange}
         />
