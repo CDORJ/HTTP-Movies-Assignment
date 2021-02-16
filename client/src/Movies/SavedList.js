@@ -13,6 +13,7 @@ function SavedList({ list }) {
             activeClassName="saved-active"
           >
             <span className="saved-movie">{movie.title}</span>
+            <button>Remove from Saved List</button>
           </NavLink>
         );
       })}

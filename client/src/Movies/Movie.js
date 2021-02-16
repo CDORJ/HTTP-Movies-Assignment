@@ -6,11 +6,11 @@ import MovieCard from "./MovieCard";
 function Movie({ addToSavedList, movieList, setMovieList }) {
   const [movie, setMovie] = useState(null);
   const { id } = useParams();
-  const { push } = useHistory();
+  const { push, goBack } = useHistory();
 
   const fetchMovie = (id) => {
     axiosWithAuth()
-      .get(`http://localhost:5000/api/movies/${id}`)
+      .get(`/movies/${id}`)
       .then((res) => setMovie(res.data))
       .catch((err) => console.log(err.response));
   };
@@ -33,22 +33,28 @@ function Movie({ addToSavedList, movieList, setMovieList }) {
       .delete(`/movies/${id}`)
       .then((res) => {
         console.log('cd: Movie.js: handleDelete: axios.delete res: ', res)
+        setMovieList(movieList.filter((mov) => res.data !== mov.id))
+        push('/')
       })
       .catch((err) => console.log(`unable to delete movie id # ${id}`, err));
   }
 
   return (
     <div className="save-wrapper">
-      <MovieCard movie={movie} setMovie={setMovie}/>
+      <MovieCard movie={movie} setMovie={setMovie} />
       <button className="save-button" onClick={saveMovie}>
         Save
       </button>
-      <button className="update-button" onClick={() => push(`/update-movie/${id}`)}>
+      <button
+        className="update-button"
+        onClick={() => push(`/update-movie/${id}`)}
+      >
         Edit Movie
       </button>
       <button className="delete-button" onClick={handleDelete}>
         Delete Movie
       </button>
+      <button onClick={() => goBack()}>Go Back To Movie List</button>
     </div>
   );
 }

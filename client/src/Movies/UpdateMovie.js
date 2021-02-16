@@ -10,7 +10,7 @@ const initialMovie = {
   stars: [],
 };
 
-const UpdateMovie = (props) => {
+const UpdateMovie = () => {
   const [movie, setMovie] = useState(initialMovie);
   const { id } = useParams();
   const { push } = useHistory();
@@ -22,7 +22,7 @@ const UpdateMovie = (props) => {
         setMovie(res.data);
       })
       .catch((err) => console.log(`unable to getMovieById # ${id}: `, err));
-  }, []);
+  }, [id]);
 
   const handleChange = (e) => {
     let value =
@@ -34,16 +34,17 @@ const UpdateMovie = (props) => {
     e.preventDefault();
     axiosWithAuth()
       .put(`/movies/${id}`, movie)
-        .then((res) => {
-          setMovie(res.data)
+      .then((res) => {
+        setMovie(res.data);
+        push("/");
       })
       .catch((err) => console.log(`unable to update movie id # ${id}: `, err));
   };
 
   return (
-    <div>
+    <div className="movie-card">
       <h2>Update, Save, or Delete This Movie:</h2>
-      <form>
+      <form onSubmit={onSubmit}>
         <label htmlFor="title" />
         Title
         <br />
@@ -80,7 +81,7 @@ const UpdateMovie = (props) => {
         <label htmlFor="stars" />
         Stars
         <br />
-        <input
+        <textarea
           id="stars"
           name="stars"
           placeHolder="Stars"
@@ -88,6 +89,7 @@ const UpdateMovie = (props) => {
           value={movie.stars.join(",")}
           onChange={handleChange}
         />
+        <br />
         <button type="onSubmit" className="save-button">
           Update Movie
         </button>
