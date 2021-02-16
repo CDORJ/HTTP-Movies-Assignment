@@ -10,7 +10,7 @@ const initialMovie = {
   stars: [],
 };
 
-const UpdateMovie = (props) => {
+const UpdateMovie = () => {
   const [movie, setMovie] = useState(initialMovie);
   const { id } = useParams();
   const { push } = useHistory();
