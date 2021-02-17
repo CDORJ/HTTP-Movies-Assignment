@@ -5,6 +5,7 @@ import MovieList from "./Movies/MovieList";
 import Movie from "./Movies/Movie";
 import axiosWithAuth from "./utilities/axiosWithAuth";
 import UpdateMovie from "./Movies/UpdateMovie";
+import AddMovie from "./Movies/AddMovie";
 
 const App = () => {
   const [savedList, setSavedList] = useState([]);
@@ -22,7 +23,7 @@ const App = () => {
 
   useEffect(() => {
     savedList.forEach((mv) => {
-      setHt({ ...ht, [mv.title]: mv.title});
+      setHt({ ...ht, [mv.title]: mv.title });
     });
   }, [savedList]);
 
@@ -60,13 +61,16 @@ const App = () => {
         <Route
           path="/update-movie/:id"
           render={() => (
-            <UpdateMovie
-              
-              movieList={movieList}
-              setMovieList={setMovieList}
-            />
+            <UpdateMovie movieList={movieList} setMovieList={setMovieList} />
           )}
         />
+        <Route
+          path="/add-movie"
+          render={() => (
+            <AddMovie movieList={movieList} setMovieList={setMovieList} />
+          )}
+        />
+       
       </Switch>
     </>
   );

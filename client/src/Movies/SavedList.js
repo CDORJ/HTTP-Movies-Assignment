@@ -31,6 +31,9 @@ function SavedList({ savedList, setSavedList }) {
       <div className="home-button">
         <Link to="/">Home</Link>
       </div>
+      <div className="home-button">
+        <Link to="/add-movie">Add a Movie</Link>
+      </div>
     </div>
   );
 }
