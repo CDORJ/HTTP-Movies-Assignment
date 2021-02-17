@@ -22,7 +22,7 @@ const UpdateMovie = () => {
         setMovie(res.data);
       })
       .catch((err) => console.log(`unable to getMovieById # ${id}: `, err));
-  }, [id]);
+  }, []);
 
   const handleChange = (e) => {
     let value =

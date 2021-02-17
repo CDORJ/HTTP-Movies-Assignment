@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Switch, Route, useHistory, useParams } from "react-router-dom";
+import { Switch, Route /* useHistory, useParams */ } from "react-router-dom";
 import SavedList from "./Movies/SavedList";
 import MovieList from "./Movies/MovieList";
 import Movie from "./Movies/Movie";
@@ -9,8 +9,9 @@ import UpdateMovie from "./Movies/UpdateMovie";
 const App = () => {
   const [savedList, setSavedList] = useState([]);
   const [movieList, setMovieList] = useState([]);
-  const { push } = useHistory();
-  const { id } = useParams();
+  const [ht, setHt] = useState({});
+  // const { push } = useHistory();
+  // const { id } = useParams();
 
   const getMovieList = () => {
     axiosWithAuth()
@@ -19,17 +20,29 @@ const App = () => {
       .catch((err) => console.log(err.response));
   };
 
-  const addToSavedList = (movie) => {
-    setSavedList([...savedList, movie]);
-  };
+  useEffect(() => {
+    savedList.forEach((mv) => {
+      setHt({ ...ht, [mv.title]: mv.title});
+    });
+  }, [savedList]);
 
+  // trying to make it only add 1 movie with same name
+
+  const addToSavedList = (movie) => {
+    if (!(movie.title in ht)) {
+      setSavedList([...savedList, movie]);
+    }
+  };
+  console.log("cd: App.js:  ht ", ht);
+
+  //
   useEffect(() => {
     getMovieList();
   }, []);
 
   return (
     <>
-      <SavedList list={savedList} />
+      <SavedList savedList={savedList} setSavedList={setSavedList} />
       <Switch>
         <Route exact path="/" render={() => <MovieList movies={movieList} />} />
 

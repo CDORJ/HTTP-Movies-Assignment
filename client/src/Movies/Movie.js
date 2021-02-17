@@ -54,7 +54,7 @@ function Movie({ addToSavedList, movieList, setMovieList }) {
       <button className="delete-button" onClick={handleDelete}>
         Delete Movie
       </button>
-      <button onClick={() => goBack()}>Go Back To Movie List</button>
+      {/* <button onClick={() => goBack()}>Go Back To Movie List</button> */}
     </div>
   );
 }
