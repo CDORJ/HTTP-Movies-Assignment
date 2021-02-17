@@ -10,7 +10,7 @@ const initialMovie = {
   stars: [],
 };
 
-const UpdateMovie = () => {
+const UpdateMovie = (props) => {
   const [movie, setMovie] = useState(initialMovie);
   const { id } = useParams();
   const { push } = useHistory();
@@ -22,7 +22,7 @@ const UpdateMovie = () => {
         setMovie(res.data);
       })
       .catch((err) => console.log(`unable to getMovieById # ${id}: `, err));
-  }, []);
+  }, [id, props.movieList]);
 
   const handleChange = (e) => {
     let value =
@@ -31,12 +31,19 @@ const UpdateMovie = () => {
   };
 
   const onSubmit = (e) => {
+
     e.preventDefault();
     axiosWithAuth()
       .put(`/movies/${id}`, movie)
       .then((res) => {
-        setMovie(res.data);
-        push("/");
+        props.setMovieList(
+          props.movieList.map((mv) => {
+            if (mv.id === Number(id)) return res.data;
+            return mv;
+          })
+        )
+        setMovie(initialMovie)
+        push(`/movies/${id}`);
       })
       .catch((err) => console.log(`unable to update movie id # ${id}: `, err));
   };
@@ -51,7 +58,7 @@ const UpdateMovie = () => {
         <input
           id="title"
           name="title"
-          placeHolder="Title"
+          placeholder="Title"
           type="text"
           value={movie.title}
           onChange={handleChange}
@@ -62,7 +69,7 @@ const UpdateMovie = () => {
         <input
           id="director"
           name="director"
-          placeHolder="Director"
+          placeholder="Director"
           type="text"
           value={movie.director}
           onChange={handleChange}
@@ -73,7 +80,7 @@ const UpdateMovie = () => {
         <input
           id="metascore"
           name="metascore"
-          placeHolder="Metascore"
+          placeholder="Metascore"
           type="text"
           value={movie.metascore}
           onChange={handleChange}
@@ -84,7 +91,7 @@ const UpdateMovie = () => {
         <textarea
           id="stars"
           name="stars"
-          placeHolder="Stars"
+          placeholder="Stars"
           type="text"
           value={movie.stars.join(",")}
           onChange={handleChange}

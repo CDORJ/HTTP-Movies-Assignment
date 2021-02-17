@@ -33,7 +33,7 @@ const App = () => {
       setSavedList([...savedList, movie]);
     }
   };
-  console.log("cd: App.js:  ht ", ht);
+  // console.log("cd: App.js:  ht ", ht);
 
   //
   useEffect(() => {
@@ -59,10 +59,10 @@ const App = () => {
 
         <Route
           path="/update-movie/:id"
-          render={(props) => (
+          render={() => (
             <UpdateMovie
-              {...props}
-              movies={movieList}
+              
+              movieList={movieList}
               setMovieList={setMovieList}
             />
           )}
